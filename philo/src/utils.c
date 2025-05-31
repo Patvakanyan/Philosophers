@@ -6,11 +6,17 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 18:31:52 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/05/27 17:41:19 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:43:41 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	print_error(char *str, int exit_code)
+{
+	printf("%s", str);
+	return (exit_code);
+}
 
 int	ft_atoi(const char *str)
 {
