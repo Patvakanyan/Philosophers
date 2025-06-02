@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:46:10 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/06/02 13:18:31 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:52:20 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_table	t_table;
 typedef struct s_philo
 {
 	int					id;
+	int					is_die;
 	pthread_t			thread;
 	t_table				*table;
 	long				last_meal_time;
@@ -45,6 +46,7 @@ typedef struct s_table
 	int					sim_stop;
 	pthread_mutex_t		sim_stop_mutex;
 
+	pthread_t			check_die;
 	t_philo				*philo;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		print_mutex;
