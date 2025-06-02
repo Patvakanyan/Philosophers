@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:46:10 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/05/31 19:18:59 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:18:31 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_table
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		print_mutex;
 	long				start_time;
+	int					i;
 }						t_table;
 
 // validate
@@ -64,4 +65,6 @@ void					free_table(t_table *table);
 void					free_mutex_forks(t_table *table, int len);
 void					free_mutex_meal(t_table *table, int len);
 
+// hellper
+int						init_philos_hellper(t_table *table);
 #endif
