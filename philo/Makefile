@@ -1,6 +1,6 @@
 NAME		= philo
 
-SRC			=	src/philo.c src/validate.c src/utils.c src/free_hellper.c
+SRC			=	src/philo.c src/validate.c src/utils.c src/free_hellper.c src/hellper.c
 OBJ			= $(SRC:.c=.o)
 
 CC			= cc

@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:46:10 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/06/02 13:52:20 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:51:08 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,5 @@ void					free_mutex_meal(t_table *table, int len);
 
 // hellper
 int						init_philos_hellper(t_table *table);
+long					get_time(void);
 #endif
