@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:26:48 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/05/31 18:59:51 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:44:50 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	is_validate(int argc, char **argv, t_table *table)
 	int	i;
 	int	j;
 
-	j = 0;
 	i = 0;
 	while (++i < argc)
 	{
