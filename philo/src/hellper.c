@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:17:57 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/06/05 17:00:12 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/06/23 20:48:32 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,16 @@ int	init_philos_hellper(t_table *table)
 				pthread_mutex_destroy(&(table->sim_stop_mutex)), 0);
 		table->philo[table->i].id = table->i;
 		table->philo[table->i].table = table;
-		table->philo[table->i].is_die = FALSE;
 		table->philo[table->i].last_meal_time = 0;
 		table->philo[table->i].meal_count = 0;
 	}
 	return (1);
 }
 
-long	get_time(void)
+long int	get_time(void)
 {
-	struct timeval	tv;
+	struct timeval	time;
 
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000000);
+	gettimeofday(&time, NULL);
+	return ((time.tv_sec * (int)1000) + (time.tv_usec / 1000));
 }

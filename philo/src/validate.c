@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:26:48 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/06/05 17:44:50 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/06/20 16:13:06 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	is_validate(int argc, char **argv, t_table *table)
 				argv[i]) < 0)
 			return (0);
 	}
+	table->sim_stop = FALSE;
 	table->optional_eat = 0;
 	table->num_of_philo = ft_atoi(argv[1]);
 	table->time_to_die = ft_atoi(argv[2]);
