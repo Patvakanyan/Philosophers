@@ -6,86 +6,25 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:45:40 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/06/25 19:17:58 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:11:54 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_usleep(int ms)
-{
-	long int	start;
-
-	start = get_time();
-	while (get_time() - start < ms)
-		usleep(500);
-}
-
-void	*chek_sim(void *arg)
-{
-	int			i;
-	long int	time;
-	t_table		*table;
-
-	table = arg;
-	while (1)
-	{
-		usleep(1000);
-		i = -1;
-		while (++i < table->num_of_philo)
-		{
-			pthread_mutex_lock(&(table->philo[i].meal_mutex));
-			time = get_time() - table->philo[i].last_meal_time;
-			if ((time > table->time_to_die) && table->philo[i].last_meal_time)
-			{
-				pthread_mutex_unlock(&(table->philo[i].meal_mutex));
-				pthread_mutex_lock(&(table->print_mutex));
-				printf("id = %d philo is die = %ld\n", table->philo[i].id,
-					table->philo[i].last_meal_time);
-				pthread_mutex_unlock(&(table->print_mutex));
-				pthread_mutex_lock(&(table->sim_stop_mutex));
-				table->sim_stop = TRUE;
-				pthread_mutex_unlock(&(table->sim_stop_mutex));
-				return (NULL);
-			}
-			pthread_mutex_unlock(&(table->philo[i].meal_mutex));
-		}
-	}
-	return (NULL);
-}
-
-// pthread_mutex_lock(&(philo->table->print_mutex));
-// printf("hello = %d", (philo->id + 1) / );
-// pthread_mutex_unlock(&(philo->table->print_mutex));
 void	choose_forks(t_philo *philo)
 {
-	int	left;
-	int	right;
-	int	temp;
-
-	left = philo->id;
-	right = (philo->id + 1) % philo->table->num_of_philo;
-	if (philo->id % 2 == 0)
-	{
-		temp = left;
-		left = right;
-		right = temp;
-	}
-	pthread_mutex_lock(&(philo->table->sim_stop_mutex));
-	if (philo->table->sim_stop)
-	{
-		pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
+	if (!choose_forks_hellper(philo))
 		return ;
-	}
 	pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
-	pthread_mutex_lock(&(philo->table->forks[left]));
-	pthread_mutex_lock(&(philo->table->forks[right]));
+	pthread_mutex_lock(&(philo->table->forks[philo->left]));
+	pthread_mutex_lock(&(philo->table->forks[philo->right]));
 	pthread_mutex_lock(&(philo->table->sim_stop_mutex));
 	if (!philo->table->sim_stop)
 	{
 		pthread_mutex_lock(&(philo->table->print_mutex));
-		printf("id = %d take the left fork [%d]\n", philo->id + 1, left);
-		printf("id = %d take the right fork [%d]\n", philo->id + 1, right);
+		printf("id = %d take the left fork\n", philo->id + 1);
+		printf("id = %d take the right fork\n", philo->id + 1);
 		printf("id = %d eating time\n", philo->id + 1);
 		pthread_mutex_unlock(&(philo->table->print_mutex));
 	}
@@ -95,8 +34,8 @@ void	choose_forks(t_philo *philo)
 	philo->meal_count++;
 	pthread_mutex_unlock(&(philo->meal_mutex));
 	ft_usleep(philo->table->time_to_eat);
-	pthread_mutex_unlock(&(philo->table->forks[left]));
-	pthread_mutex_unlock(&(philo->table->forks[right]));
+	pthread_mutex_unlock(&(philo->table->forks[philo->left]));
+	pthread_mutex_unlock(&(philo->table->forks[philo->right]));
 }
 
 void	take_the_forks(t_philo *philo)
@@ -113,7 +52,7 @@ void	take_the_forks(t_philo *philo)
 		}
 		pthread_mutex_unlock(&(philo->meal_mutex));
 		pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
-		usleep(philo->table->time_to_eat / 2);
+		usleep(philo->table->time_to_die / 2);
 		choose_forks(philo);
 	}
 	else
@@ -127,6 +66,8 @@ void	*start_sim(void *arg)
 	philo = arg;
 	while (get_time() < philo->table->start_time)
 		usleep(100);
+	if(philo->id % 2)
+		usleep(1000);
 	while (1)
 	{
 		pthread_mutex_lock(&(philo->table->sim_stop_mutex));
@@ -162,7 +103,6 @@ int	build_sim(t_table *table)
 	pthread_join(table->check_die, NULL);
 	while (++i < table->num_of_philo)
 		pthread_join(table->philo[i].thread, NULL);
-	end_sim(table);
 	return (1);
 }
 
@@ -200,6 +140,7 @@ int	main(int argc, char **argv)
 		return (free_table(table), print_error("Wrong arguments!\n", 0));
 	if (!init_philos(table))
 		return (free(table), print_error("Memory allocation failed!\n", 0));
-	free(table);
+	end_sim(table);
+	free_table(table);
 	return (0);
 }

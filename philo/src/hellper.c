@@ -6,11 +6,32 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:17:57 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/06/23 20:48:32 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:00:23 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	choose_forks_hellper(t_philo *philo)
+{
+	int	temp;
+
+	philo->left = philo->id;
+	philo->right = (philo->id + 1) % philo->table->num_of_philo;
+	if (philo->id % 2 == 0)
+	{
+		temp = philo->left;
+		philo->left = philo->right;
+		philo->right = temp;
+	}
+	pthread_mutex_lock(&(philo->table->sim_stop_mutex));
+	if (philo->table->sim_stop)
+	{
+		pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
+		return (0);
+	}
+	return (1);
+}
 
 int	init_philos_hellper(t_table *table)
 {
@@ -26,8 +47,19 @@ int	init_philos_hellper(t_table *table)
 		table->philo[table->i].table = table;
 		table->philo[table->i].last_meal_time = 0;
 		table->philo[table->i].meal_count = 0;
+		table->philo[table->i].right = 0;
+		table->philo[table->i].left = 0;
 	}
 	return (1);
+}
+
+void	ft_usleep(int ms)
+{
+	long int	start;
+
+	start = get_time();
+	while (get_time() - start < ms)
+		usleep(500);
 }
 
 long int	get_time(void)
@@ -36,4 +68,15 @@ long int	get_time(void)
 
 	gettimeofday(&time, NULL);
 	return ((time.tv_sec * (int)1000) + (time.tv_usec / 1000));
+}
+
+void	chek_sim_hellper(t_table *table)
+{
+	pthread_mutex_unlock(&(table->philo[table->i].meal_mutex));
+	pthread_mutex_lock(&(table->print_mutex));
+	printf("id = %d philo is die \n", table->philo[table->i].id);
+	pthread_mutex_unlock(&(table->print_mutex));
+	pthread_mutex_lock(&(table->sim_stop_mutex));
+	table->sim_stop = TRUE;
+	pthread_mutex_unlock(&(table->sim_stop_mutex));
 }

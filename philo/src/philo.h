@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:46:10 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/06/25 18:22:00 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:03:36 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ typedef struct s_philo
 	t_table				*table;
 	long int			last_meal_time;
 	int					meal_count;
+	int					left;
+	int					right;
 	pthread_mutex_t		meal_mutex;
 }						t_philo;
 
@@ -38,9 +40,9 @@ typedef struct s_table
 {
 	int					num_of_philo;
 	int					optional_eat;
-	int					time_to_die;
-	int					time_to_eat;
-	int					time_to_sleep;
+	long int			time_to_die;
+	long int			time_to_eat;
+	long int			time_to_sleep;
 
 	int					sim_stop;
 	pthread_mutex_t		sim_stop_mutex;
@@ -70,4 +72,8 @@ void					free_mutex_meal(t_table *table, int len);
 int						init_philos_hellper(t_table *table);
 long int				get_time(void);
 void					end_sim(t_table *table);
+void					ft_usleep(int ms);
+int						choose_forks_hellper(t_philo *philo);
+void					chek_sim_hellper(t_table *table);
+void					*chek_sim(void *arg);
 #endif
