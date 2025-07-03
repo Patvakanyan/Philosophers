@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:45:40 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/07/03 15:11:54 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/03 17:42:35 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ void	choose_forks(t_philo *philo)
 	if (!philo->table->sim_stop)
 	{
 		pthread_mutex_lock(&(philo->table->print_mutex));
-		printf("id = %d take the left fork\n", philo->id + 1);
-		printf("id = %d take the right fork\n", philo->id + 1);
-		printf("id = %d eating time\n", philo->id + 1);
+		printf("%ld %d has taken a fork\n", get_time()
+			- philo->table->start_time, philo->id + 1);
+		printf("%ld %d  is thinking\n", get_time() - philo->table->start_time,
+			philo->id + 1);
 		pthread_mutex_unlock(&(philo->table->print_mutex));
 	}
 	pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
@@ -47,7 +48,8 @@ void	take_the_forks(t_philo *philo)
 		if (!philo->table->sim_stop && philo->last_meal_time)
 		{
 			pthread_mutex_lock(&(philo->table->print_mutex));
-			printf("id = %d thinking time\n", philo->id + 1);
+			printf("%ld %d  is thinking\n", get_time()
+				- philo->table->start_time, philo->id + 1);
 			pthread_mutex_unlock(&(philo->table->print_mutex));
 		}
 		pthread_mutex_unlock(&(philo->meal_mutex));
@@ -66,7 +68,7 @@ void	*start_sim(void *arg)
 	philo = arg;
 	while (get_time() < philo->table->start_time)
 		usleep(100);
-	if(philo->id % 2)
+	if (philo->id % 2)
 		usleep(1000);
 	while (1)
 	{
@@ -80,7 +82,8 @@ void	*start_sim(void *arg)
 		if (!philo->table->sim_stop && philo->last_meal_time)
 		{
 			pthread_mutex_lock(&(philo->table->print_mutex));
-			printf("id = %d sleeping time\n", philo->id + 1);
+			printf("%ld %d  is sleeping\n", get_time()
+				- philo->table->start_time, philo->id + 1);
 			pthread_mutex_unlock(&(philo->table->print_mutex));
 		}
 		pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
