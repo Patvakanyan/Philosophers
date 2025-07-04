@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:17:57 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/07/03 17:46:13 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/04 19:50:56 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ long int	get_time(void)
 
 void	chek_sim_hellper(t_table *table)
 {
-	pthread_mutex_lock(&table->philo[table->i].meal_mutex);
 	pthread_mutex_unlock(&(table->philo[table->i].meal_mutex));
 	pthread_mutex_lock(&(table->print_mutex));
 	printf("%ld %d died\n", get_time() - table->start_time,
