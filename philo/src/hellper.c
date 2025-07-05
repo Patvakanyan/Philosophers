@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:17:57 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/07/04 19:50:56 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/05 13:01:58 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,22 @@ int	init_philos_hellper(t_table *table)
 	return (1);
 }
 
-void	ft_usleep(int ms)
+void	ft_usleep(t_table *table, int ms)
 {
 	long int	start;
 
 	start = get_time();
 	while (get_time() - start < ms)
+	{
+		pthread_mutex_lock(&table->sim_stop_mutex);
+		if (table->sim_stop)
+		{
+			pthread_mutex_unlock(&table->sim_stop_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&table->sim_stop_mutex);
 		usleep(500);
+	}
 }
 
 long int	get_time(void)

@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:45:40 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/07/04 19:33:40 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/05 12:59:19 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	choose_forks(t_philo *philo)
 		pthread_mutex_lock(&(philo->table->print_mutex));
 		printf("%ld %d has taken a fork\n", get_time()
 			- philo->table->start_time, philo->id + 1);
-		printf("%ld %d  is thinking\n", get_time() - philo->table->start_time,
+		printf("%ld %d is eating\n", get_time() - philo->table->start_time,
 			philo->id + 1);
 		pthread_mutex_unlock(&(philo->table->print_mutex));
 	}
@@ -34,7 +34,7 @@ void	choose_forks(t_philo *philo)
 	philo->last_meal_time = get_time();
 	philo->meal_count++;
 	pthread_mutex_unlock(&(philo->meal_mutex));
-	ft_usleep(philo->table->time_to_eat);
+	ft_usleep(philo->table, philo->table->time_to_eat);
 	pthread_mutex_unlock(&(philo->table->forks[philo->left]));
 	pthread_mutex_unlock(&(philo->table->forks[philo->right]));
 }
@@ -54,7 +54,7 @@ void	take_the_forks(t_philo *philo)
 		}
 		pthread_mutex_unlock(&(philo->meal_mutex));
 		pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
-		usleep(philo->table->time_to_die / 2);
+		ft_usleep(philo->table, philo->table->time_to_die / 2);
 		choose_forks(philo);
 	}
 	else
@@ -69,7 +69,7 @@ void	*start_sim(void *arg)
 	while (get_time() < philo->table->start_time)
 		usleep(100);
 	if (philo->id % 2)
-		usleep(1000);
+		ft_usleep(philo->table, 1000);
 	while (1)
 	{
 		pthread_mutex_lock(&(philo->table->sim_stop_mutex));
@@ -87,7 +87,7 @@ void	*start_sim(void *arg)
 			pthread_mutex_unlock(&(philo->table->print_mutex));
 		}
 		pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
-		ft_usleep(philo->table->time_to_sleep);
+		ft_usleep(philo->table, philo->table->time_to_sleep);
 	}
 	return (NULL);
 }

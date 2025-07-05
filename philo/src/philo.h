@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:46:10 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/07/03 17:12:12 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/05 12:57:30 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void					free_mutex_meal(t_table *table, int len);
 int						init_philos_hellper(t_table *table);
 long int				get_time(void);
 void					end_sim(t_table *table);
-void					ft_usleep(int ms);
+void					ft_usleep(t_table *table, int ms);
 int						choose_forks_hellper(t_philo *philo);
 void					chek_sim_hellper(t_table *table);
 void					*chek_sim(void *arg);
