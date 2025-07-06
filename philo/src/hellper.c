@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:17:57 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/07/06 14:34:08 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:57:42 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	ft_usleep(t_table *table, int ms)
 			break ;
 		}
 		pthread_mutex_unlock(&table->sim_stop_mutex);
-		usleep(10);
+		usleep(100);
 	}
 }
 
