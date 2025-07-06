@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 15:02:52 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/07/06 14:36:26 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/06 15:50:05 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	*chek_sim(void *arg)
 		table->i = -1;
 		while (++table->i < table->num_of_philo)
 		{
-			time = get_time() - table->philo[table->i].last_meal_time;
 			pthread_mutex_lock(&(table->philo[table->i].meal_mutex));
+			time = get_time() - table->philo[table->i].last_meal_time;
 			if (!optional_eat_hellper(table))
 				return (NULL);
 			if ((time > (table->time_to_die / 1000))
