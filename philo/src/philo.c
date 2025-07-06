@@ -6,38 +6,11 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:45:40 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/07/05 12:59:19 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/06 14:36:21 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	choose_forks(t_philo *philo)
-{
-	if (!choose_forks_hellper(philo))
-		return ;
-	pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
-	pthread_mutex_lock(&(philo->table->forks[philo->left]));
-	pthread_mutex_lock(&(philo->table->forks[philo->right]));
-	pthread_mutex_lock(&(philo->table->sim_stop_mutex));
-	if (!philo->table->sim_stop)
-	{
-		pthread_mutex_lock(&(philo->table->print_mutex));
-		printf("%ld %d has taken a fork\n", get_time()
-			- philo->table->start_time, philo->id + 1);
-		printf("%ld %d is eating\n", get_time() - philo->table->start_time,
-			philo->id + 1);
-		pthread_mutex_unlock(&(philo->table->print_mutex));
-	}
-	pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
-	pthread_mutex_lock(&(philo->meal_mutex));
-	philo->last_meal_time = get_time();
-	philo->meal_count++;
-	pthread_mutex_unlock(&(philo->meal_mutex));
-	ft_usleep(philo->table, philo->table->time_to_eat);
-	pthread_mutex_unlock(&(philo->table->forks[philo->left]));
-	pthread_mutex_unlock(&(philo->table->forks[philo->right]));
-}
 
 void	take_the_forks(t_philo *philo)
 {
@@ -46,15 +19,10 @@ void	take_the_forks(t_philo *philo)
 		pthread_mutex_lock(&(philo->table->sim_stop_mutex));
 		pthread_mutex_lock(&(philo->meal_mutex));
 		if (!philo->table->sim_stop && philo->last_meal_time)
-		{
-			pthread_mutex_lock(&(philo->table->print_mutex));
-			printf("%ld %d  is thinking\n", get_time()
-				- philo->table->start_time, philo->id + 1);
-			pthread_mutex_unlock(&(philo->table->print_mutex));
-		}
+			print_hellper(philo, "is thinking");
 		pthread_mutex_unlock(&(philo->meal_mutex));
 		pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
-		ft_usleep(philo->table, philo->table->time_to_die / 2);
+		usleep(100);
 		choose_forks(philo);
 	}
 	else
@@ -69,7 +37,7 @@ void	*start_sim(void *arg)
 	while (get_time() < philo->table->start_time)
 		usleep(100);
 	if (philo->id % 2)
-		ft_usleep(philo->table, 1000);
+		usleep(1000);
 	while (1)
 	{
 		pthread_mutex_lock(&(philo->table->sim_stop_mutex));
@@ -80,14 +48,9 @@ void	*start_sim(void *arg)
 		take_the_forks(philo);
 		pthread_mutex_lock(&(philo->table->sim_stop_mutex));
 		if (!philo->table->sim_stop && philo->last_meal_time)
-		{
-			pthread_mutex_lock(&(philo->table->print_mutex));
-			printf("%ld %d  is sleeping\n", get_time()
-				- philo->table->start_time, philo->id + 1);
-			pthread_mutex_unlock(&(philo->table->print_mutex));
-		}
+			print_hellper(philo, "is sleeping");
 		pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
-		ft_usleep(philo->table, philo->table->time_to_sleep);
+		ft_usleep(philo->table, philo->table->time_to_sleep / 1000);
 	}
 	return (NULL);
 }

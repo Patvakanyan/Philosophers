@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:46:10 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/07/05 12:57:30 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/06 14:29:44 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,6 @@ void					ft_usleep(t_table *table, int ms);
 int						choose_forks_hellper(t_philo *philo);
 void					chek_sim_hellper(t_table *table);
 void					*chek_sim(void *arg);
+void					choose_forks(t_philo *philo);
+void					print_hellper(t_philo *philo, char *str);
 #endif

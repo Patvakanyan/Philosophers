@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:26:48 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/07/03 17:07:08 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/05 23:06:00 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int	is_validate(int argc, char **argv, t_table *table)
 	table->sim_stop = FALSE;
 	table->optional_eat = 0;
 	table->num_of_philo = ft_atoi(argv[1]);
-	table->time_to_die = ft_atoi(argv[2]);
-	table->time_to_eat = ft_atoi(argv[3]);
-	table->time_to_sleep = ft_atoi(argv[4]);
+	table->time_to_die = ft_atoi(argv[2]) * 1000;
+	table->time_to_eat = ft_atoi(argv[3]) * 1000;
+	table->time_to_sleep = ft_atoi(argv[4]) * 1000;
 	if (argc == 6)
 		table->optional_eat = ft_atoi(argv[5]);
 	return (1);

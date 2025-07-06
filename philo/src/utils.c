@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 18:31:52 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/05/30 18:43:41 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/05 16:23:49 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int	ft_strlen(char *str)
 
 int	ft_isdigit(int c)
 {
+	if (c == '+')
+		return (1);
 	if (c >= '0' && c <= '9')
 		return (1);
 	else
