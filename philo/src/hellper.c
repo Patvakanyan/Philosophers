@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:17:57 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/07/06 21:57:42 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:55:52 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 int	one_philo(t_philo *philo)
 {
+	pthread_mutex_lock(&(philo->meal_mutex));
+	philo->last_meal_time = get_time();
+	philo->meal_count++;
+	pthread_mutex_unlock(&(philo->meal_mutex));
 	pthread_mutex_lock(&philo->table->forks[0]);
 	pthread_mutex_lock(&philo->table->print_mutex);
 	printf("%ld %d has taken a fork\n", get_time() - philo->table->start_time,
@@ -21,10 +25,6 @@ int	one_philo(t_philo *philo)
 	pthread_mutex_unlock(&philo->table->print_mutex);
 	ft_usleep(philo->table, philo->table->time_to_die / 1000);
 	pthread_mutex_unlock(&philo->table->forks[0]);
-	pthread_mutex_lock(&(philo->meal_mutex));
-	philo->last_meal_time = get_time();
-	philo->meal_count++;
-	pthread_mutex_unlock(&(philo->meal_mutex));
 	pthread_mutex_lock(&philo->table->sim_stop_mutex);
 	philo->table->sim_stop = TRUE;
 	pthread_mutex_unlock(&philo->table->sim_stop_mutex);
