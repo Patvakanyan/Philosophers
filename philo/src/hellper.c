@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:17:57 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/07/09 13:55:52 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:43:41 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	choose_forks_hellper(t_philo *philo)
 		pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
 		return (0);
 	}
+	pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
 	return (1);
 }
 
@@ -95,8 +96,10 @@ void	ft_usleep(t_table *table, int ms)
 void	chek_sim_hellper(t_table *table)
 {
 	pthread_mutex_unlock(&(table->philo[table->i].meal_mutex));
-	print_hellper(&table->philo[table->i], "died");
 	pthread_mutex_lock(&(table->sim_stop_mutex));
 	table->sim_stop = TRUE;
+	pthread_mutex_lock(&table->print_mutex);
+	printf("%ld %d  died\n", get_time() - table->start_time, table->i + 1);
+	pthread_mutex_unlock(&table->print_mutex);
 	pthread_mutex_unlock(&(table->sim_stop_mutex));
 }

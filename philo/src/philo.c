@@ -6,7 +6,7 @@
 /*   By: apatvaka <apatvaka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:45:40 by apatvaka          #+#    #+#             */
-/*   Updated: 2025/07/09 13:52:54 by apatvaka         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:44:32 by apatvaka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,7 @@ void	take_the_forks(t_philo *philo)
 {
 	if (philo->id % 2 != 0)
 	{
-		pthread_mutex_lock(&(philo->table->sim_stop_mutex));
-		pthread_mutex_lock(&(philo->meal_mutex));
-		if (!philo->table->sim_stop && philo->last_meal_time)
-			print_hellper(philo, "is thinking");
-		pthread_mutex_unlock(&(philo->meal_mutex));
-		pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
+		print_hellper(philo, "is thinking");
 		usleep(100);
 		choose_forks(philo);
 	}
@@ -46,10 +41,7 @@ void	*start_sim(void *arg)
 				NULL);
 		pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
 		take_the_forks(philo);
-		pthread_mutex_lock(&(philo->table->sim_stop_mutex));
-		if (!philo->table->sim_stop && philo->last_meal_time)
-			print_hellper(philo, "is sleeping");
-		pthread_mutex_unlock(&(philo->table->sim_stop_mutex));
+		print_hellper(philo, "is sleeping");
 		ft_usleep(philo->table, philo->table->time_to_sleep / 1000);
 	}
 	return (NULL);
